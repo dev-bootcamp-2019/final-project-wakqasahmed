@@ -4,6 +4,8 @@
 
 This project is part of the assessment requirement of *2018DP Ethereum Developer Bootcamp*. It allows sellers to list their items, ship and claim funds (of their sold items in ether) and buyers to buy items by paying in ether and acknowledge on receiving the items.
 
+![Basic dApp Marketplace Flowchart](dapp_flowchart.png)
+
 ## Pre-requisites
 
 1. NodeJS (version 8.9.x)

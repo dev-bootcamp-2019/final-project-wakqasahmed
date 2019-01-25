@@ -1,6 +1,6 @@
 {
-  "short_name": "Ether's List",
-  "name": "Ether's List - An example dApp",
+  "short_name": "Basic dApp Marketplace",
+  "name": "Basic dApp Marketplace",
   "start_url": "./?utm_source=web_app_manifest",
   "icons": [
     {

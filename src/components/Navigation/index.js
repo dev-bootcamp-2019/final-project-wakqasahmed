@@ -56,7 +56,7 @@ class Navigation extends Component {
           onChange={this.handleChange}>
           <Tab
             icon={<ThumbIcon />}
-            label="Basic dApp Marketplace"
+            label="Items List"
             value={'/home'}>
           </Tab>
           <Tab

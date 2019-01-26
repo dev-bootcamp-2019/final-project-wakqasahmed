@@ -1,3 +1,3 @@
 export const appConfig = {
-  name: 'Ether\'s List'
+  name: 'Marketplace dApp'
 }

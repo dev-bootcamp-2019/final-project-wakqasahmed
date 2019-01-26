@@ -64,7 +64,6 @@ contract TestMerchandise {
     }
 
     //Test to ship the item bought in one of the previous tests
-    //Not a proper test (integration testing is done with Mocha) since buyer and seller are same but works for unit test
     function testShipItem() public {
         bool item = merchandise.shipItem(0);
         

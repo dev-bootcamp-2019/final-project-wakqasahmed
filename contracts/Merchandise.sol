@@ -111,12 +111,14 @@ contract Merchandise {
     }
 
     //allow seller to mark the item as shipped
-    function shipItem(uint itemId) public {
+    function shipItem(uint itemId) public returns(bool){
         //validate the item has been sold
         require(items[itemId].sold == true, "Cannot ship unsold items");
 
         //mark the item as shipped (by seller)
         items[itemId].shipped = true;
+
+        return true;
     }
 
     //allow buyer to mark the item as received    
@@ -144,10 +146,5 @@ contract Merchandise {
         
         //transfer the amount from contract to the seller
         msg.sender.transfer(items[itemId].itemPrice);
-    }
-    
-    //the balance of the Merchandise contract
-    function depositsBalance() public view returns (uint) {
-        return address(this).balance;
     }
 }

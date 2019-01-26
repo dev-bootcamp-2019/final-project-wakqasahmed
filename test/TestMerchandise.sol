@@ -7,12 +7,15 @@ import "../contracts/Merchandise.sol";
 contract TestMerchandise {
 
     uint public initialBalance = 10 ether;
+    uint public balanceUsed = 0 ether;
     Merchandise merchandise;
 
+    //Get the deployed contract as a pre-requisite
     function beforeAll() public {
         merchandise = Merchandise(DeployedAddresses.Merchandise());
     }
 
+    //Test to add an item in items list
     function testAddItem() public {
         uint numberItems = merchandise.addItem("Test Item", "Test Description", 4 ether);
 
@@ -21,6 +24,7 @@ contract TestMerchandise {
         Assert.equal(numberItems, expected, "It should contain 1 item");
     }
 
+    //Test to retrieve the item added in the previous test
     function testGetItem() public {
         uint expectedItemId = 0;
         string memory expectedName = "Test Item";
@@ -46,10 +50,25 @@ contract TestMerchandise {
         Assert.isFalse(returnReceived, "The received status should be false");
     }
 
+    //Test to buy the item added in one of the previous tests 
     function testBuyItem() public {
         bool item = merchandise.buyItem.value(4 ether)(0);
-
+        balanceUsed = 4 ether;
+        
         Assert.isTrue(item, "The function should have returned true");
     }
+
+    //Test to verify the balance of the buyer is as expected
+    function testBuyersBalance() public {
+        Assert.equal(address(this).balance, initialBalance-balanceUsed, "The balance should be the amount unused");
+    }
+
+    //Test to ship the item bought in one of the previous tests
+    //Not a proper test (integration testing is done with Mocha) since buyer and seller are same but works for unit test
+    function testShipItem() public {
+        bool item = merchandise.shipItem(0);
+        
+        Assert.isTrue(item, "The function should have returned true");
+    }    
 
 }

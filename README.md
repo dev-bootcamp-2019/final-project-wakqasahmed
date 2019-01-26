@@ -25,7 +25,7 @@ This project is part of the assessment requirement of *2018DP Ethereum Developer
 1. Open a terminal, *run `ganache-cli` and keep it running*
 2. Open another (2nd) terminal and run the following:
 ```
-    $ git clone  
+    $ git clone https://github.com/dev-bootcamp-2019/final-project-wakqasahmed.git
     $ cd final-project-wakqasahmed
 ```
 

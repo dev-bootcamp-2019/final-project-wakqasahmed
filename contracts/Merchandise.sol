@@ -3,10 +3,11 @@ pragma solidity ^0.5.0;
 contract Merchandise {
     address owner;
     
-    //to allow turning the marketplace operations off in case of emergency (Circuit Breaker)
+    //to allow turning the marketplace operations off in case of emergency - Circuit Breakers (Pause contract functionality)
     //(an alternative of selfdestruct) avoids consequences such as permanent perishing of contract
-    bool online;
-    
+    bool private online;
+
+    //item entity
     struct Item {
         uint itemId;
         address seller;
@@ -20,22 +21,30 @@ contract Merchandise {
     }
     
     Item[] public items;
-    
+
+    modifier isAdmin() {
+        require(msg.sender == owner, "Only contract owner can perform this action");
+        _;
+    }
+
     constructor() public {
         owner = msg.sender;
         online = true;
     }
 
-    function kill() public {
-        require(msg.sender == owner, "Only contract owner can kill contract");
-        selfdestruct(msg.sender);
-    }
-    
-    function setOnline(bool status) public {
-        require(msg.sender == owner, "Only contract owner can set online status");
+    //allow switching the store on/off [Circuit Breakers (Pause contract functionality)]    
+    function setOnline(bool status) public isAdmin {
+        //require(msg.sender == owner, "Only contract owner can set online status");
         online = status;
     }
-    
+
+    //in case owner decides to permanently erase the contract from the blockchain
+    function kill() public isAdmin {
+        //require(msg.sender == owner, "Only contract owner can kill contract");
+        selfdestruct(msg.sender);
+    }
+
+    //For logging of new item creation
     event AddListing(
         address seller,
         string name,
@@ -112,6 +121,9 @@ contract Merchandise {
         //validate the store is online (and not discontinued)
         require(online == true, "Store must be online to buy items");        
         
+        //validate the buyer is not the seller itself (and purchasing for the sake of rising its rating/reviews)
+        //require(msg.sender == items[itemId].seller, "Cannot purchase items that you yourself are selling");
+
         //validate the item is available for sale
         require(items[itemId].sold == false, "Cannot purchase items already sold");
 

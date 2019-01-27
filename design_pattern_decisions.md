@@ -1,3 +1,5 @@
-Project includes a file called design_pattern_desicions.md that explains some of the design decisions made by the author.
+# Design Patterns Decisions
 
-design_pattern_desicions.md adequately describes the design patterns implemented in the project.
+1. `Fail early and fail loud` pattern is applied by using `require` validation instead of silent if statements to avoid unnecessary code execution.
+
+2. `Circuit Breaker` pattern is applied to stop certain operations of marketplace when needed (e.g. add new item, buy an item and claim funds).

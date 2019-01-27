@@ -52,7 +52,8 @@ class MerchandiseView extends Component {
   }
 
   getAvailableItems() {
-    // add code to get available items from the Marketplace here
+    const { actions, merchandise } = this.props
+    actions.merchandise.getItem(0)
   }
 
   render() {

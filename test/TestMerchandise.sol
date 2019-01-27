@@ -7,7 +7,6 @@ import "../contracts/Merchandise.sol";
 contract TestMerchandise {
 
     uint public initialBalance = 10 ether;
-    uint public balanceUsed = 0 ether;
     Merchandise merchandise;
 
     //Get the deployed contract as a pre-requisite
@@ -56,11 +55,6 @@ contract TestMerchandise {
         balanceUsed = 4 ether;
         
         Assert.isTrue(item, "The function should have returned true");
-    }
-
-    //Test to verify the balance of the buyer is as expected
-    function testBuyersBalance() public {
-        Assert.equal(address(this).balance, initialBalance-balanceUsed, "The balance should be the amount unused");
     }
 
     //Test to ship the item bought in one of the previous tests

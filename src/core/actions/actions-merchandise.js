@@ -3,6 +3,35 @@ import contract from 'truffle-contract'
 import Merchandise from 'contracts/Merchandise.json'
 import web3 from 'web3'
 
+
+function getItemFromContract(MerchandiseContract, id, resolve, reject) {
+    MerchandiseContract.deployed().then((merchandisecontract) => {
+        return merchandisecontract.getItem(id)
+    })
+    .then(result => {
+        const transaction = (result !== null) ? result: null
+        resolve(transaction)
+    })
+    .catch((error) => {
+        reject(error)
+    })
+}
+
+function submitPurchaseToNetwork(MerchandiseContract, id, price, resolve, reject) {
+    MerchandiseContract.deployed().then((merchandisecontract) => {
+        return merchandisecontract.buyItem(id, {
+            value: web3.utils.toWei(price, 'ether')
+        })
+    })
+    .then(result => {
+        const transaction = (result !== null) ? result : null
+        resolve(transaction)
+    })
+    .catch((error) => {
+        reject(error)
+    })
+}
+
 function registerListing(MerchandiseContract, merch, resolve, reject) {
     MerchandiseContract.deployed().then((merchandisecontract) => {
         return merchandisecontract.addItem(
@@ -34,6 +63,44 @@ function claimFundsFromContract(MerchandiseContract, resolve, reject) {
     .catch((error) => {
         reject(error)
     })
+}
+
+function dispatchItemRetrieved(transaction, dispatch) {
+    dispatch((() => {
+        return {
+            type: constants.ITEM_RETRIEVED,
+            transaction: transaction,
+            success: true
+        }
+    })())
+}
+
+function dispatchItemRetrieveFailed(dispatch) {
+    dispatch((() => {
+        return {
+            type: constants.ITEM_RETRIEVED,
+            success: false
+        }
+    })())
+}
+
+function dispatchPurchaseComplete(transaction, dispatch) {
+    dispatch((() => {
+        return {
+            type: constants.ITEM_SOLD,
+            transaction: transaction,
+            success: true
+        }
+    })())
+}
+
+function dispatchPurchaseFailed(dispatch) {
+    dispatch((() => {
+        return {
+            type: constants.ITEM_SOLD,
+            success: false
+        }
+    })())
 }
 
 function dispatchListingCreated(transaction, dispatch) {
@@ -72,6 +139,53 @@ function dispatchFundsFail(dispatch) {
             success: false
         }
     }))
+}
+
+export function getItem(id) {
+    return (dispatch, getState) => {
+        const { web3Provider } = getState().provider
+        const MerchandiseContract = contract(Merchandise)
+        MerchandiseContract.setProvider(web3Provider.currentProvider)
+        MerchandiseContract.defaults({from: web3Provider.eth.defaultAccount})
+
+        return new Promise((resolve, reject) => {
+            getItemFromContract(MerchandiseContract, id, resolve, reject)
+        })
+        .then((transaction) => {
+            if (transaction) {
+                dispatchItemRetrieved(transaction, dispatch)
+            } else {
+                dispatchItemRetrieveFailed(dispatch)
+            }
+        })
+    }
+}
+
+export function buyItem(id, price) {
+    return (dispatch, getState) => {
+        const { web3Provider } = getState().provider
+
+        console.log(`Purchasing item ${id} for ${price} ether`)
+        const MerchandiseContract = contract(Merchandise)
+
+        MerchandiseContract.setProvider(web3Provider.currentProvider)
+        MerchandiseContract.defaults({from: web3Provider.eth.defaultAccount})
+        console.log(`Buy item using address ${web3Provider.eth.defaultAccount}`)
+
+        return new Promise((resolve, reject) => {
+            submitPurchaseToNetwork(MerchandiseContract, id, price, resolve, reject)
+        })
+        .then((transaction) => {
+            if (transaction) {
+                console.log("Transaction submitted and promise resolved")
+                dispatchPurchaseComplete(transaction, dispatch)
+            } else {
+                console.log("Transaction rejected")
+                dispatchPurchaseFailed(dispatch)
+            }
+
+        })
+    }
 }
 
 export function addListing(merch) {

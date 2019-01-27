@@ -59,6 +59,28 @@ You should see the following:
     ✓ Should fail to ship if not bought (95ms)
 ```
 
+### Executing (basic) marketplace transactions via CLI
+
+```
+truffle develop
+
+#Pre-requisite (Truffle accounts that it listed)
+develop> web3.eth.getAccounts()
+#Accounts:
+#(0) 0xf1f293a8481be4049191fd0592afaaad03f24a94 (Owner)
+#(1) 0x06fb63cadc1e6fdb2791f95c83c85ce0d07adf07 (Seller)
+#(2) 0x8c0534225e1556b3f4ceb987e4d9e0465144dd09 (Buyer)
+
+#Getting contract address to interact with it
+develop> var mktp = await Merchandise.at(Merchandise.address)
+develop> mktp.address //should display contracts' address
+
+#Getting and Adding an item
+develop> mktp.getItem(0)
+develop> mktp.addItem("Ledger Nano S", "Protect your funds", "1500000000000000000")
+develop> mktp.getItem(0)
+```
+
 4. To access the dApp UI, run the following:
 ```
 npm install

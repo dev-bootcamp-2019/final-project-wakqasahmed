@@ -87,20 +87,6 @@ npm install
 npm start
 ```
 
-## How to run (Docker)
-
-1. Build the docker container.
-    ```
-    docker build -t dappmarketplace .
-    ```
-
-1. Launch the docker container.
-    ```
-    docker run -p 3000:3000 dappmarketplace:latest
-    ```
-
-1. Browse to http://localhost:3000
-
 ## FAQ
 
 * __Why is there both a truffle.js file and a truffle-config.js file?__

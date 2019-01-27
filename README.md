@@ -45,6 +45,20 @@ OR
     develop> test
 ```
 
+You should see the following:
+
+```
+  TestMerchandise
+    ✓ testAddItem (90ms)
+    ✓ testGetItem (153ms)
+    ✓ testBuyItem (59ms)
+    ✓ testShipItem (63ms)
+
+  Contract: Merchandise
+    ✓ Should have the test item in the marketplace
+    ✓ Should fail to ship if not bought (95ms)
+```
+
 4. To access the dApp UI, run the following:
 ```
 npm install

@@ -52,7 +52,6 @@ contract TestMerchandise {
     //Test to buy the item added in one of the previous tests 
     function testBuyItem() public {
         bool item = merchandise.buyItem.value(4 ether)(0);
-        balanceUsed = 4 ether;
         
         Assert.isTrue(item, "The function should have returned true");
     }

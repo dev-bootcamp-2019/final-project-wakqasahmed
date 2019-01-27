@@ -1,3 +1,4 @@
+/* For Microsoft Windows Users */
 module.exports = {
   migrations_directory: "./migrations",
   networks: {

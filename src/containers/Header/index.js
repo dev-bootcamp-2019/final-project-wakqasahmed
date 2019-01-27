@@ -1,6 +1,7 @@
 import React, { Component }   from 'react';
 import { connect }            from 'react-redux';
 import { bindActionCreators } from 'redux';
+import TopBar                 from 'components/TopBar';
 import AppBar                 from 'components/AppBar';
 import Navigation             from 'components/Navigation';
 import { withRouter }         from 'react-router-dom';
@@ -24,6 +25,7 @@ class Header extends Component {
     return (
       <div className={styles}>
         <header>
+          <TopBar />
           <AppBar
             title={appConfig.name}
             onLeftIconButtonTouchTap={this.handleToggle} />

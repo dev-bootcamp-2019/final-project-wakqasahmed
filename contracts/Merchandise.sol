@@ -1,8 +1,9 @@
 pragma solidity ^0.5.0;
+/** @title Goods and services merchandising */
 contract Merchandise {
     address owner;
     
-    //to allow turning the marketplace operations off in case of emergency
+    //to allow turning the marketplace operations off in case of emergency (Circuit Breaker)
     //(an alternative of selfdestruct) avoids consequences such as permanent perishing of contract
     bool online;
     
@@ -23,9 +24,7 @@ contract Merchandise {
     constructor() public {
         owner = msg.sender;
         online = true;
-        // addItem("First Item", "Added by Contract deployment", 1 ether);
     }
-
 
     function kill() public {
         require(msg.sender == owner, "Only contract owner can kill contract");
@@ -43,7 +42,13 @@ contract Merchandise {
         uint price
     );
 
-    function addItem(string memory name, string memory description, uint price) public returns(uint) {
+    /** @dev Adds an item with its price
+      * @param name Name of the item.
+      * @param description Description of the item.
+      * @param price Price of the item.
+      * @return totalItems Total number of items in the items array.
+      */
+    function addItem(string memory name, string memory description, uint price) public returns(uint totalItems) {
         
         //validate the store is online (and not discontinued)
         require(online == true, "Adding items not allowed when store is offline");
@@ -74,10 +79,19 @@ contract Merchandise {
 
         return items.length;
     }
-    
-    //get the item (to display on UI) by its itemId (sku)
+
+    /** @dev Get the item by its itemId (sku)
+      * @param itemId Identifier of the item (a sequential number).
+      * @return id The identifier of the item.
+      * @return name The name of the item.
+      * @return description The description of the item.
+      * @return price The price of the item.
+      * @return isSold Has the item sold to a buyer.
+      * @return isShipped Has the item shipped by seller.
+      * @return isReceived Has the item received by buyer.
+      */   
     function getItem(uint itemId) public view returns(
-        uint, string memory, string memory, uint, bool, bool, bool
+        uint id, string memory name, string memory description, uint price, bool isSold, bool isShipped, bool isReceived
     ){
         return (
             items[itemId].itemId,
@@ -90,8 +104,11 @@ contract Merchandise {
         );       
     }
 
-    //allow buyer to purchase an item    
-    function buyItem(uint itemId) public payable returns(bool) {
+    /** @dev allows buyer to purchase an item by paying price in ether
+      * @param itemId Identifier of the item to buy
+      * @return result A boolean to indicate whether the operation was successful.
+      */     
+    function buyItem(uint itemId) public payable returns(bool result) {
         //validate the store is online (and not discontinued)
         require(online == true, "Store must be online to buy items");        
         
@@ -110,8 +127,11 @@ contract Merchandise {
         return true;
     }
 
-    //allow seller to mark the item as shipped
-    function shipItem(uint itemId) public returns(bool){
+    /** @dev allows seller to mark the item as shipped
+      * @param itemId Identifier of the item to mark
+      * @return result A boolean to indicate whether the operation was successful.
+      */     
+    function shipItem(uint itemId) public returns(bool result){
         //validate the item has been sold
         require(items[itemId].sold == true, "Cannot ship unsold items");
 
@@ -121,7 +141,9 @@ contract Merchandise {
         return true;
     }
 
-    //allow buyer to mark the item as received    
+    /** @dev allows buyer to mark the item as received
+      * @param itemId Identifier of the item to mark
+      */ 
     function receiveItem(uint itemId) public {
         //validate the item has been shipped (by seller)
         require(items[itemId].shipped == true, "Cannot receive unshipped items");
@@ -133,7 +155,9 @@ contract Merchandise {
         items[itemId].received = true;
     }
     
-    //allow seller to withdraw amount of the item he shipped
+    /** @dev allows seller to withdraw amount of the item he/she shipped
+      * @param itemId Identifier of the item to mark
+      */     
     function claimFunds(uint itemId) public {
         //validate the store is online (and not discontinued)
         require(online == true, "Store must be online to claim funds");        

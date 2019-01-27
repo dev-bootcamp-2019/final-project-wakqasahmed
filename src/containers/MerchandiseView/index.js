@@ -39,20 +39,33 @@ class MerchandiseView extends Component {
     super(props)
     this.buyItem = this.buyItem.bind(this)
     this.getAvailableItems = this.getAvailableItems.bind(this)
+    this.state = {
+      open: false,
+      message: ''
+    }
   }
 
   componentDidMount() {
-    // add code for componentDidMount here
+    console.log('Calling componentDidMount')
+    setInterval(() => this.getAvailableItems(), 5000)
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.provider.web3Provider !== nextProps.provider.web3Provider) {
       this.getAvailableItems()
     }
+    if (nextProps.merchandise.transaction !== this.props.merchandise.transaction) {
+      console.log(nextProps.merchandise.transaction)
+      this.setState({
+        message: nextProps.merchandise.transaction.tx,
+        open: true
+      })
+    }
   }
 
   getAvailableItems() {
-    const { actions, merchandise } = this.props
+    console.log('Checking...')
+    const { actions } = this.props
     actions.merchandise.getItem(0)
   }
 
@@ -90,12 +103,20 @@ class MerchandiseView extends Component {
                 <FloatingActionButton onClick={this.addMerchandise} style={fabStyle}>
                     <ContentAdd />
                 </FloatingActionButton>
+                <Snackbar
+                    message={this.state.message}
+                    open={this.state.open}
+                    />
             </div>
     )
   }
 
   buyItem() {
-    // add code to buy items from the Marketplace here
+    const { actions } = this.props
+    actions.merchandise.buyItem(
+            this.props.merchandise.merchandise.itemId,
+            this.props.merchandise.merchandise.itemPrice
+        )
   }
 
   addMerchandise=() => {

@@ -34,7 +34,7 @@ Starting migrations...
    -----------------------
    > transaction hash:    0xba2594bfbd53a279f92437e4a2305a4cc9213750eb851d3ab4d44ebb6a1eccb5
    > Blocks: 0            Seconds: 9
-   > contract address:    0x144ef33D7ea0364370204198d05f3405A8b5c466
+   > contract address:    *0x144ef33D7ea0364370204198d05f3405A8b5c466*
    > account:             0x84D6b72EC0B3241d5fE5e6A81Dda48b0cfAe65B7
    > balance:             2.94780326
    > gas used:            1635078

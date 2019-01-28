@@ -19,8 +19,15 @@ This project is part of the assessment requirement of *2018DP Ethereum Developer
     npm install -g truffle
 ```
 4. Ganache from [Truffle Website](!https://truffleframework.com/ganache)
+```
+    npm install -g ganache-cli
+```
+5. Install the application
+```
+    npm install
+```
 
-## How to run manually (macOS)
+## How to run
 
 1. Open a terminal, *run `ganache-cli` and keep it running*
 2. Open another (2nd) terminal and run the following:
@@ -83,8 +90,7 @@ develop> mktp.getItem(0)
 
 4. To access the dApp UI, run the following:
 ```
-npm install
-npm start
+    npm start
 ```
 
 ## FAQ

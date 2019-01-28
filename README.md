@@ -22,10 +22,6 @@ This project is part of the assessment requirement of *2018DP Ethereum Developer
 ```
     npm install -g ganache-cli
 ```
-5. Install the application
-```
-    npm install
-```
 
 ## How to run
 
@@ -90,6 +86,7 @@ develop> mktp.getItem(0)
 
 4. To access the dApp UI, run the following:
 ```
+    npm install
     npm start
 ```
 

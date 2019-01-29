@@ -98,7 +98,7 @@ develop> mktp.getItem(0)
 
     Truffle requires the truffle.js file be named truffle-config on Windows machines. Feel free to delete the file that doesn't correspond to your platform.
 
-* __I am trying to run ganache-cli from macOS (guest) and connect truffle to it (Outside In), what are the steps?__
+* __I am trying to run ganache-cli from macOS (host) and connect truffle (in guest OS) to it (Outside In), what are the steps?__
 
     1) Run ganache from macOS using the following command `ganache-cli` OR Run Ganache Desktop GUI
     2) Make sure in your `Homestead.yaml`, the port forwarding configuration is uncommented (to map the port between host and guest) e.g.
@@ -124,8 +124,9 @@ develop> mktp.getItem(0)
            to: 8545
     ```
     If you just configured, run `vagrant reload --provision` to apply the changes.
-    3) Now, make sure the vagrant box (ubuntu) port 8545 is accessible from outside (in the guest OS, in my case macOS).
+    3) Now, make sure the vagrant box (ubuntu) port 8545 is accessible from outside (in the host OS, in my case macOS).
     ```
+        brew install telnet
         telnet 0.0.0.0 8545
     ```
     4) In `Metamask`, enter details for `Custom RPC` in New RPC URL as `http://0.0.0.0:8545` (You may need to log out and import using seed given by ganache)

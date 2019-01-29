@@ -9,6 +9,8 @@ This project is part of the assessment requirement of *2018DP Ethereum Developer
 ## Pre-requisites
 
 1. NodeJS (version 8.9.x)
+Recommended to use nvm to have multiple node versions https://gist.github.com/d2s/372b5943bce17b964a79
+
 2. Webpack
 ```
     npm install -g webpack

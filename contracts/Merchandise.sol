@@ -8,7 +8,7 @@ contract Merchandise {
     address owner;
 
     using SafeMath for uint;
-    using StringUtils for *;
+    using StringUtils for string;
 
     //to allow turning the marketplace operations off in case of emergency - Circuit Breakers (Pause contract functionality)
     //(an alternative of selfdestruct) avoids consequences such as permanent perishing of contract

@@ -1,8 +1,15 @@
 pragma solidity ^0.5.0;
+
+import "../libraries/SafeMath.sol";
+import "../libraries/StringUtils.sol";
+
 /** @title Goods and services merchandising */
 contract Merchandise {
     address owner;
-    
+
+    using SafeMath for uint;
+    using StringUtils for *;
+
     //to allow turning the marketplace operations off in case of emergency - Circuit Breakers (Pause contract functionality)
     //(an alternative of selfdestruct) avoids consequences such as permanent perishing of contract
     bool private online;
@@ -24,6 +31,16 @@ contract Merchandise {
 
     modifier isAdmin() {
         require(msg.sender == owner, "Only contract owner can perform this action");
+        _;
+    }
+
+    modifier notEmpty(string memory _string) {
+        require (!StringUtils.equal(_string, ""), "String cannot be empty");
+        _;
+    }
+
+    modifier isOnline() {
+        require(online == true, "Action cannot be performed since the store is offline");
         _;
     }
 
@@ -57,10 +74,10 @@ contract Merchandise {
       * @param price Price of the item.
       * @return totalItems Total number of items in the items array.
       */
-    function addItem(string memory name, string memory description, uint price) public returns(uint totalItems) {
+    function addItem(string memory name, string memory description, uint price) public isOnline notEmpty(name) returns(uint totalItems) {
         
         //validate the store is online (and not discontinued)
-        require(online == true, "Adding items not allowed when store is offline");
+        //require(online == true, "Adding items not allowed when store is offline");
         
         //validate the price to be greater than zero
         require(price > 0, "Price must be greater than zero");
@@ -117,9 +134,9 @@ contract Merchandise {
       * @param itemId Identifier of the item to buy
       * @return result A boolean to indicate whether the operation was successful.
       */     
-    function buyItem(uint itemId) public payable returns(bool result) {
+    function buyItem(uint itemId) public isOnline payable returns(bool result) {
         //validate the store is online (and not discontinued)
-        require(online == true, "Store must be online to buy items");        
+        //require(online == true, "Store must be online to buy items");        
         
         //validate the buyer is not the seller itself (and purchasing for the sake of rising its rating/reviews)
         //require(msg.sender == items[itemId].seller, "Cannot purchase items that you yourself are selling");
@@ -170,9 +187,9 @@ contract Merchandise {
     /** @dev allows seller to withdraw amount of the item he/she shipped
       * @param itemId Identifier of the item to mark
       */     
-    function claimFunds(uint itemId) public {
+    function claimFunds(uint itemId) public isOnline {
         //validate the store is online (and not discontinued)
-        require(online == true, "Store must be online to claim funds");        
+        //require(online == true, "Store must be online to claim funds");        
         
         //validate the fund claimer of the item is the seller itself
         require(msg.sender == items[itemId].seller, "Only seller can claim funds");

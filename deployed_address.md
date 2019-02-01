@@ -1,3 +1,7 @@
+Rinkeby Contract Address: 0x144ef33D7ea0364370204198d05f3405A8b5c466
+
+Verify Here: https://rinkeby.etherscan.io/address/0x144ef33D7ea0364370204198d05f3405A8b5c466
+
 Starting migrations...
 ======================
 > Network name:    'rinkeby'

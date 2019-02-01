@@ -98,22 +98,6 @@ develop> mktp.getItem(0)
 
     Truffle requires the truffle.js file be named truffle-config on Windows machines. Feel free to delete the file that doesn't correspond to your platform.
 
-* __I am trying to run ganache-cli from macOS (host) and connect truffle (in guest OS) to it (Outside In), what are the steps?__
-
-    1) Run ganache from macOS using the following command `ganache-cli` OR Run Ganache Desktop GUI
-    2) Make sure in your `Homestead.yaml`, the port forwarding configuration is uncommented (to map the port between host and guest) e.g.
-    ```
-    ports:
-         - send: 8545
-           to: 8545
-    ```
-    If you have just configured, run `vagrant reload --provision` to apply the changes.
-    3) Now, make sure the macOS port 8545 is accessible from inside vagrant box (ubuntu), run the following inside `vagrant ssh`
-    ```
-        telnet 0.0.0.0 8545
-    ```
-    4) In `Metamask`, connect to `Localhost 8545` (Log out and import using seed given by ganache) and verify the accounts addresses are similar to what are displayed in ganache
-
 * __I am trying to run ganache-cli from vagrant box and connect metamask to it (Inside out), what are the steps?__
 
     1) Run ganache from vagrant box using the following command: `ganache-cli --host 0.0.0.0`
@@ -126,16 +110,16 @@ develop> mktp.getItem(0)
     If you just configured, run `vagrant reload --provision` to apply the changes.
     3) Now, make sure the vagrant box (ubuntu) port 8545 is accessible from outside (in the host OS, in my case macOS).
     ```
-        brew install telnet
-        telnet 0.0.0.0 8545
+        $ brew install telnet
+        $ telnet 0.0.0.0 8545
     ```
-    4) In `Metamask`, enter details for `Custom RPC` in New RPC URL as `http://0.0.0.0:8545` (You may need to log out and import using seed given by ganache)
+    4) In `Metamask`, enter details for `Custom RPC` in New RPC URL as `http://0.0.0.0:8545` (You may need to log out and import using seed given by ganache) and verify the accounts addresses are similar to what are displayed in ganache
     https://stackoverflow.com/questions/52363977/how-to-run-ganache-cli-from-vagrant-box
 
 * __I am encountering an error `npm install: Unhandled rejection Error: EACCES: permission denied ` while `npm install`, what should i do?__
     Give ownership to npm like this:
     ```
-    sudo chown -R $USER:$GROUP ~/.npm
-    sudo chown -R $USER:$GROUP ~/.config
+    $ sudo chown -R $USER:$GROUP ~/.npm
+    $ sudo chown -R $USER:$GROUP ~/.config
     ```
     https://github.com/termux/termux-packages/issues/1192
